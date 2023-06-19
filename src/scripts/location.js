@@ -1,39 +1,26 @@
-const getCoordOptions = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0,
-};
-
-async function getAddress(latitude, longitude) {
-  const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${parseFloat(latitude)}&lon=${parseFloat(
-    longitude
-  )}&zoom=18`;
+async function setAddress() {
+  const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${coordinate.x}&lon=${coordinate.y}&zoom=18`;
   const c = await fetch(url)
     .then((response) => response.json())
     .then((response) => {
-      const loc = `${response.address.city} ${response.address.quarter}`;
+      address.country = response.address.country;
+      address.province = response.address.province;
+      address.city = response.address.city;
+      address.quarter = response.address.quarter;
+      address.road = response.address.road;
+      address.building = response.address.building;
     })
     .catch((e) => {
       console.log(e);
     });
 }
 
-function getCoord(position) {
-  /*
-  position.coords.latitude;
-  position.coords.longitude;
-  position.coords.accuracy;
-  position.coords.altitude;
-  position.coords.heading;
-  position.coords.speed;
-  */
-  const latitude = position.coords.latitude;
-  const longitude = position.coords.longitude;
-  getAddress(latitude, longitude);
-  getWeather(convertGeoCoordToGridCoord(latitude, longitude).x, convertGeoCoordToGridCoord(latitude, longitude).y);
+function setCoordinate(position) {
+  coordinate.x = position.coords.latitude;
+  coordinate.y = position.coords.longitude;
 }
 
-function getCoordError(e) {
+function getPositionError(e) {
   // https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError
   switch (e.code) {
     case 1:
@@ -48,7 +35,7 @@ function getCoordError(e) {
   }
 }
 
-function convertGeoCoordToGridCoord(latitude, longitude) {
+function setGeoCoordToGridCoord() {
   const earthRadius = 6371.00877; // 지구 반경(km)
   const gridScale = 5.0; // 격자 간격(km)
   const standardParallelLatitude1 = 30.0; // Lambert 정형원추도법 실측거리 대응 위도 1(북위 30 °N)
@@ -73,16 +60,13 @@ function convertGeoCoordToGridCoord(latitude, longitude) {
   let ro = Math.tan(Math.PI * 0.25 + olat * 0.5);
   ro = (re * sf) / Math.pow(ro, sn);
 
-  let ra = Math.tan(Math.PI * 0.25 + latitude * oneDegree * 0.5);
+  let ra = Math.tan(Math.PI * 0.25 + coordinate.x * oneDegree * 0.5);
   ra = (re * sf) / Math.pow(ra, sn);
-  let theta = longitude * oneDegree - olon;
+  let theta = coordinate.y * oneDegree - olon;
   if (theta > Math.PI) theta -= 2.0 * Math.PI;
   if (theta < -Math.PI) theta += 2.0 * Math.PI;
   theta *= sn;
 
-  const gridCoord = {};
-  gridCoord["x"] = Math.floor(ra * Math.sin(theta) + originLatitudeToGrid + 0.5);
-  gridCoord["y"] = Math.floor(ro - ra * Math.cos(theta) + originLongitudeToGrid + 0.5);
-
-  return gridCoord;
+  gridCoordinate.x = Math.floor(ra * Math.sin(theta) + originLatitudeToGrid + 0.5);
+  gridCoordinate.y = Math.floor(ro - ra * Math.cos(theta) + originLongitudeToGrid + 0.5);
 }
