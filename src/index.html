@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Micro-Weather</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet" />
+    <link href="/dist/output.css" rel="stylesheet" />
+  </head>
+  <body class="w-[500px] h-[400px] font-['IBM_Plex_Sans_KR'] text-white bg-[#5490e5] dark:bg-[#1f242e]">
+    <h1 class="sr-only">Micro-Weather</h1>
+    <main>
+      <section id="ncstTemp">
+        <h2 class="sr-only">현재 온도</h2>
+        <article class="flex justify-center items-center mb-5 gap-4">
+          <img class="w-24" src="images/loading.png" alt="loading" />
+          <h3 class="text-7xl font-bold">-°</h3>
+        </article>
+      </section>
+      <section id="ncstData">
+        <h2 class="sr-only">현재 지역과 강수량, 습도</h2>
+        <article class="flex justify-center gap-4">
+          <h3 class="text-xl font-bold">-</h3>
+          <div class="text-lg ml-4">
+            <div class="flex mb-3">
+              <img class="w-7 mr-2" src="images/umbrella.png" alt="" />
+              <h3>강수량 - mm</h3>
+            </div>
+            <div class="flex">
+              <img class="w-7 mr-2" src="images/humidity.png" alt="" />
+              <h3>습도 -%</h3>
+            </div>
+          </div>
+        </article>
+      </section>
+      <section id="pmData">
+        <h2 class="sr-only">현재 미세먼지 정보</h2>
+        <article class="flex justify-center items-center mt-5">
+          <h2 class="p-2 mr-2 border-2 rounded-full font-bold">-</h2>
+          <div>
+            <h3>초미세먼지</h3>
+            <h3 class="font-bold">-</h3>
+          </div>
+          <h2 class="p-2 ml-10 mr-2 border-2 rounded-full font-bold">-</h2>
+          <div>
+            <h3>미세먼지</h3>
+            <h3 class="font-bold">-</h3>
+          </div>
+        </article>
+      </section>
+    </main>
+    <section id="fcstData">
+      <h2 class="sr-only">예보시점부터 6시간까지의 예보</h2>
+    </section>
+    <!-- Load JS Files -->
+    <script src="scripts/class.js"></script>
+    <script src="scripts/location.js"></script>
+    <script src="scripts/weather.js"></script>
+    <script src="scripts/init.js"></script>
+    <script src="scripts/draw.js"></script>
+    <!-- // Load JS Files -->
+  </body>
+</html>
