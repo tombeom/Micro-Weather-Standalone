@@ -1,48 +1,57 @@
 const imgData = [
   {
-    id: "0",
+    idx: "0",
     src: "images/clear.png",
     alt: "맑음",
+    id: "clear",
   },
   {
-    id: "1",
+    idx: "1",
     src: "images/mostlyCloudy.png",
     alt: "구름많음",
+    id: "mostlyCloudy",
   },
   {
-    id: "2",
+    idx: "2",
     src: "images/cloudy.png",
     alt: "흐림",
+    id: "cloudy",
   },
   {
-    id: "3",
+    idx: "3",
     src: "images/rain.png",
     alt: "비 혹은 비/눈",
+    id: "rain",
   },
   {
-    id: "4",
+    idx: "4",
     src: "images/snow.png",
     alt: "눈",
+    id: "snow",
   },
   {
-    id: "5",
+    idx: "5",
     src: "images/shower.png",
     alt: "빗방울 혹은 빗방울눈날림 (강수량 0.1mm 미만)",
+    id: "shower",
   },
   {
-    id: "6",
+    idx: "6",
     src: "images/snowDrifting.png",
     alt: "눈날림 (적설량 0.1cm 미만)",
+    id: "snowDrifting",
   },
   {
-    id: "7",
+    idx: "7",
     src: "images/lightning.png",
     alt: "낙뢰",
+    id: "lightning",
   },
   {
-    id: "8",
+    idx: "8",
     src: "images/thunderStorm.png",
     alt: "뇌우",
+    id: "thunderStorm",
   },
 ];
 
@@ -84,6 +93,20 @@ const address = {
   building: "",
 };
 
-let nowcastData = [];
-let forecastData = [];
-let particulateMatterData = [];
+const nowcastData = {
+  pty: [],
+  reh: [],
+  rn1: [],
+  t1h: [],
+};
+
+const forecastData = {
+  fcstTime: [],
+  lgt: [],
+  pty: [],
+  rn1: [],
+  sky: [],
+  t1h: [],
+}
+
+const particulateMatterData = [];

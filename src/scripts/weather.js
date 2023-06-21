@@ -2,49 +2,125 @@ function getDate() {
   const todayDate = new Date();
   const year = todayDate.getFullYear().toString();
   const month = ("00" + (todayDate.getMonth() + 1).toString()).slice(-2);
-  const day = ("00" + todayDate.getDate().toString()).slice(-2);
-  const dateFormat = year + month + day;
+  
+  let day = ("00" + todayDate.getDate().toString()).slice(-2);
 
+  if (todayDate.getHours() === 0) {
+    if (todayTime.getMinutes() < 40) {
+      day = ("00" + (todayDate.getDate() - 1).toString()).slice(-2);
+    }
+  }
+
+  const dateFormat = year + month + day;
   return dateFormat;
 }
 
 function getTime(type) {
   const todayTime = new Date();
-  let rawHour = parseInt(("0" + todayTime.getHours().toString()).slice(-2));
-  const rawMinute = parseInt("0" + todayTime.getMinutes().toString().slice(-2));
 
   let hourFormat = "";
 
   if (type === "ncst") {
-    if (rawMinute <= 40) {
-      if (rawHour <= 10) {
-        hourFormat = "0" + (rawHour - 1).toString() + "00";
+    // ncst 요청 시 API 제공 시간 40분 이후
+    if (todayTime.getHours() === 0) {
+      // 00시 getHour() 호출 시 0 출력
+      if (todayTime.getMinutes() < 40) {
+        // 40분 이전 시 "2300" 리턴
+        hourFormat = `2300`
+        return hourFormat
       } else {
-        hourFormat = (rawHour - 1).toString() + "00";
+        // 40분 이후 시 "0000" 리턴
+        hourFormat = `0000`
+        return hourFormat
       }
-    } else if (rawHour) {
-      if (rawHour <= 10) {
-        hourFormat = "0" + (rawHour - 1).toString() + "00";
+    } else if (todayTime.getHours() > 0 && todayTime.getHours() < 10) {
+      // 01시 ~ 10시까지 getHour() 호출 시 한 자리 수 출력
+      if (todayTime.getMinutes() < 40) {
+        // 40분 이전 시 "0 + (현재 시각 - 1) + 00" 값 리턴
+        hourFormat = `0${(todayTime.getHours()-1)}00`
+        return hourFormat
       } else {
-        hourFormat = rawHour.toString() + "00";
+        // 40분 이후 시 "0 + 현재 시각 + 00" 값 리턴
+        hourFormat = `0${todayTime.getHours()}00`
+        return hourFormat
+      }
+    } else {
+      if (todayTime.getMinutes() < 40) {
+        // 40분 이전 시 "현재 시각 + 00" 값 리턴
+        hourFormat = `${(todayTime.getHours()-1)}00`
+        return hourFormat
+      } else {
+        // 40분 이후 시 "현재 시각 + 00" 값 리턴
+        hourFormat = `${todayTime.getHours()}00`
+        return hourFormat
       }
     }
-    return hourFormat;
   } else if (type === "fcst") {
-    if (rawMinute <= 45) {
-      if (rawHour <= 10) {
-        hourFormat = "0" + (rawHour - 1).toString() + "00";
+    // fcst 요청 시 30분 단위 호출 및 API 제공 시간 45분 이후
+    if (todayTime.getHours() === 0) {
+      // 00시 getHour() 호출 시 0 출력
+      if (todayTime.getMinutes() < 45) {
+        // 40분 이전 시 "2330" 리턴
+        hourFormat = `0030`
+        return hourFormat
       } else {
-        hourFormat = (rawHour - 1).toString() + "00";
+        // 40분 이후 시 "0030" 리턴
+        hourFormat = `0030`
+        return hourFormat
       }
-    } else if (rawHour) {
-      if (rawHour <= 10) {
-        hourFormat = "0" + (rawHour - 1).toString() + "00";
+    } else if (todayTime.getHours() > 0 && todayTime.getHours() < 10) {
+      // 01시 ~ 10시까지 getHour() 호출 시 한 자리 수 출력
+      if (todayTime.getMinutes() < 45) {
+        // 40분 이전 시 "0 + (현재 시각 - 1) + 30" 값 리턴
+        hourFormat = `0${(todayTime.getHours()-1)}30`
+        return hourFormat
       } else {
-        hourFormat = rawHour.toString() + "00";
+        // 40분 이후 시 "0 + 현재 시각 + 30" 값 리턴
+        hourFormat = `0${todayTime.getHours()}30`
+        return hourFormat
+      }
+    } else {
+      if (todayTime.getMinutes() < 45) {
+        // 40분 이전 시 "현재 시각 + 00" 값 리턴
+        hourFormat = `${(todayTime.getHours()-1)}30`
+        return hourFormat
+      } else {
+        // 40분 이후 시 "현재 시각 + 00" 값 리턴
+        hourFormat = `${todayTime.getHours()}30`
+        return hourFormat
       }
     }
-    return hourFormat;
+  }
+}
+
+function setWeatherData(type, data) {
+  if (type === "ncst") {
+    if (data.category === "PTY") {
+      nowcastData.pty.push(data.obsrValue)
+    } else if (data.category === "REH") {
+      nowcastData.reh.push(data.obsrValue)
+    } else if (data.category === "RN1") {
+      nowcastData.rn1.push(data.obsrValue)
+    } else if (data.category === "T1H") {
+      nowcastData.t1h.push(data.obsrValue)
+    }
+  } else if (type === "fcst") {
+    if (data.category === "LGT") {
+      forecastData.lgt.push(data.fcstValue)
+      forecastData.fcstTime.push(data.fcstTime)
+    } else if (data.category === "PTY") {
+      forecastData.pty.push(data.fcstValue)
+    } else if (data.category === "RN1") {
+        if (data.fcstValue === "강수없음") {
+          forecastData.rn1.push("0")
+        } else {
+          forecastData.rn1.push(data.fcstValue)
+        }
+    } else if (data.category === "SKY") {
+      forecastData.sky.push(data.fcstValue)
+    } else if (data.category === "T1H") {
+      forecastData.t1h.push(data.fcstValue)
+    }
   }
 }
 
@@ -61,12 +137,13 @@ async function getNowcast() {
     ny: gridCoordinate.y,
   };
   const requestUrl = `${url}?${new URLSearchParams(params).toString()}`;
+  console.log(requestUrl);
   const c = await fetch(requestUrl)
     .then((res) => res.json())
     .then((res) => {
       if (res.response.header.resultCode === "00") {
         for (const i of res.response.body.items.item) {
-          nowcastData.push(new NowcastWeather(i));
+          setWeatherData("ncst", i)
         }
       } else {
         console.log("API Error");
@@ -95,7 +172,7 @@ async function getForecast() {
     .then((res) => {
       if (res.response.header.resultCode === "00") {
         for (const i of res.response.body.items.item) {
-          forecastData.push(new ForecastWeather(i));
+          setWeatherData("fcst", i)
         }
       } else {
         console.log("API Error");

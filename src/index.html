@@ -11,30 +11,30 @@
   <body class="w-[500px] h-[400px] font-['IBM_Plex_Sans_KR'] text-white bg-[#5490e5] dark:bg-[#1f242e]">
     <h1 class="sr-only">Micro-Weather</h1>
     <main>
-      <section id="ncstTemp">
+      <section>
         <h2 class="sr-only">현재 온도</h2>
         <article class="flex justify-center items-center mb-5 gap-4">
-          <img class="w-24" src="images/loading.png" alt="loading" />
-          <h3 class="text-7xl font-bold">-°</h3>
+          <img class="w-24" src="images/loading.png" alt="loading" id="ncstImg" />
+          <h3 class="text-7xl font-bold" id="ncstTemp">-°</h3>
         </article>
       </section>
-      <section id="ncstData">
+      <section>
         <h2 class="sr-only">현재 지역과 강수량, 습도</h2>
         <article class="flex justify-center gap-4">
-          <h3 class="text-xl font-bold">-</h3>
+          <h3 class="text-xl font-bold" id="location">-</h3>
           <div class="text-lg ml-4">
             <div class="flex mb-3">
-              <img class="w-7 mr-2" src="images/umbrella.png" alt="" />
-              <h3>강수량 - mm</h3>
+              <img class="w-7 mr-2" src="images/umbrella.png" alt="precipitation" />
+              <h3 id="ncstPrecipitation">강수량 - mm</h3>
             </div>
             <div class="flex">
-              <img class="w-7 mr-2" src="images/humidity.png" alt="" />
-              <h3>습도 -%</h3>
+              <img class="w-7 mr-2" src="images/humidity.png" alt="humidity" />
+              <h3 id="ncstHumidity">습도 -%</h3>
             </div>
           </div>
         </article>
       </section>
-      <section id="pmData">
+      <section>
         <h2 class="sr-only">현재 미세먼지 정보</h2>
         <article class="flex justify-center items-center mt-5">
           <h2 class="p-2 mr-2 border-2 rounded-full font-bold">-</h2>
@@ -50,8 +50,10 @@
         </article>
       </section>
     </main>
-    <section id="fcstData">
+    <section>
       <h2 class="sr-only">예보시점부터 6시간까지의 예보</h2>
+      <ol class="grid grid-cols-6 justify-center mt-12" id="fcstData">
+      </ol>
     </section>
     <!-- Load JS Files -->
     <script src="scripts/class.js"></script>
