@@ -6,7 +6,7 @@ function getDate() {
   let day = ("00" + todayDate.getDate().toString()).slice(-2);
 
   if (todayDate.getHours() === 0) {
-    if (todayDate.getMinutes() < 40) {
+    if (todayTime.getMinutes() < 40) {
       day = ("00" + (todayDate.getDate() - 1).toString()).slice(-2);
     }
   }
