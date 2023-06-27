@@ -6,7 +6,7 @@ function getDate() {
   let day = ("00" + todayDate.getDate().toString()).slice(-2);
 
   if (todayDate.getHours() === 0) {
-    if (todayTime.getMinutes() < 40) {
+    if (todayDate.getMinutes() < 40) {
       day = ("00" + (todayDate.getDate() - 1).toString()).slice(-2);
     }
   }
@@ -24,7 +24,7 @@ function getTime(type) {
     // ncst 요청 시 API 제공 시간 40분 이후
     if (todayTime.getHours() === 0) {
       // 00시 getHour() 호출 시 0 출력
-      if (todayTime.getMinutes() < 40) {
+      if (todayTime.getMinutes() < 30) {
         // 40분 이전 시 "2300" 리턴
         hourFormat = `2300`
         return hourFormat
@@ -44,6 +44,16 @@ function getTime(type) {
         hourFormat = `0${todayTime.getHours()}00`
         return hourFormat
       }
+    } else if (todayTime.getHours() === 10){
+      if (todayTime.getMinutes() < 40) {
+        // 40분 이전 시 "현재 시각 + 00" 값 리턴
+        hourFormat = `0${(todayTime.getHours()-1)}00`
+        return hourFormat
+      } else {
+        // 40분 이후 시 "현재 시각 + 00" 값 리턴
+        hourFormat = `${todayTime.getHours()}00`
+        return hourFormat
+      }
     } else {
       if (todayTime.getMinutes() < 40) {
         // 40분 이전 시 "현재 시각 + 00" 값 리턴
@@ -59,7 +69,7 @@ function getTime(type) {
     // fcst 요청 시 30분 단위 호출 및 API 제공 시간 45분 이후
     if (todayTime.getHours() === 0) {
       // 00시 getHour() 호출 시 0 출력
-      if (todayTime.getMinutes() < 45) {
+      if (todayTime.getMinutes() < 30) {
         // 40분 이전 시 "2330" 리턴
         hourFormat = `0030`
         return hourFormat
@@ -77,6 +87,16 @@ function getTime(type) {
       } else {
         // 40분 이후 시 "0 + 현재 시각 + 30" 값 리턴
         hourFormat = `0${todayTime.getHours()}30`
+        return hourFormat
+      }
+    } else if (todayTime.getHours() === 10){
+      if (todayTime.getMinutes() < 45) {
+        // 40분 이전 시 "현재 시각 + 00" 값 리턴
+        hourFormat = `0${(todayTime.getHours()-1)}30`
+        return hourFormat
+      } else {
+        // 40분 이후 시 "현재 시각 + 00" 값 리턴
+        hourFormat = `${todayTime.getHours()}30`
         return hourFormat
       }
     } else {
@@ -133,11 +153,10 @@ async function getNowcast() {
     dataType: "JSON",
     base_date: getDate(),
     base_time: getTime("ncst"),
-    nx: gridCoordinate.x,
-    ny: gridCoordinate.y,
+    nx: position.gridCoordinate.x,
+    ny: position.gridCoordinate.y,
   };
   const requestUrl = `${url}?${new URLSearchParams(params).toString()}`;
-  console.log(requestUrl);
   const c = await fetch(requestUrl)
     .then((res) => res.json())
     .then((res) => {
@@ -145,12 +164,13 @@ async function getNowcast() {
         for (const i of res.response.body.items.item) {
           setWeatherData("ncst", i)
         }
+        getForecast()
       } else {
-        console.log("API Error");
+        console.log(`Couldn't Get Nowcast Data\nError Code : ${res.response.header.resultCode}`);
       }
     })
     .catch((e) => {
-      console.log(e);
+      console.log(`Couldn't Get Nowcast Data\nAPI Call Failed`);
     });
 }
 
@@ -163,8 +183,8 @@ async function getForecast() {
     dataType: "JSON",
     base_date: getDate(),
     base_time: getTime("fcst"),
-    nx: gridCoordinate.x,
-    ny: gridCoordinate.y,
+    nx: position.gridCoordinate.x,
+    ny: position.gridCoordinate.y,
   };
   const requestUrl = `${url}?${new URLSearchParams(params).toString()}`;
   const c = await fetch(requestUrl)
@@ -174,12 +194,14 @@ async function getForecast() {
         for (const i of res.response.body.items.item) {
           setWeatherData("fcst", i)
         }
+        drawNcst();
+        drawFcst();
       } else {
-        console.log("API Error");
+        console.log(`Couldn't Get Forecast Data\nError Code : ${res.response.header.resultCode}`);
       }
     })
     .catch((e) => {
-      console.log(e);
+      console.log(`Couldn't Get Forecast Data\nAPI Call Failed`);
     });
 }
 

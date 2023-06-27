@@ -1,23 +1,25 @@
 async function setAddress() {
-  const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${coordinate.x}&lon=${coordinate.y}&zoom=18`;
+  const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coordinate.latitude}&lon=${position.coordinate.longitude}&zoom=18`;
   const c = await fetch(url)
     .then((response) => response.json())
     .then((response) => {
-      address.country = response.address.country;
-      address.province = response.address.province;
-      address.city = response.address.city;
-      address.quarter = response.address.quarter;
-      address.road = response.address.road;
-      address.building = response.address.building;
+      position.address.country = response.address.country;
+      position.address.province = response.address.province;
+      position.address.city = response.address.city;
+      position.address.quarter = response.address.quarter;
+      position.address.road = response.address.road;
+      position.address.building = response.address.building;
+
+      drawPosition()
     })
     .catch((e) => {
-      console.log(e);
+      console.log(`Couldn't Get Address Data`);
     });
 }
 
-function setCoordinate(position) {
-  coordinate.x = position.coords.latitude;
-  coordinate.y = position.coords.longitude;
+function setCoordinate(coordinate) {
+  position.coordinate.latitude = coordinate.coords.latitude;
+  position.coordinate.longitude = coordinate.coords.longitude;
 }
 
 function getPositionError(e) {
@@ -35,7 +37,7 @@ function getPositionError(e) {
   }
 }
 
-function setGeoCoordToGridCoord() {
+function convertCoordToGridCoord() {
   const earthRadius = 6371.00877; // 지구 반경(km)
   const gridScale = 5.0; // 격자 간격(km)
   const standardParallelLatitude1 = 30.0; // Lambert 정형원추도법 실측거리 대응 위도 1(북위 30 °N)
@@ -60,13 +62,13 @@ function setGeoCoordToGridCoord() {
   let ro = Math.tan(Math.PI * 0.25 + olat * 0.5);
   ro = (re * sf) / Math.pow(ro, sn);
 
-  let ra = Math.tan(Math.PI * 0.25 + coordinate.x * oneDegree * 0.5);
+  let ra = Math.tan(Math.PI * 0.25 + position.coordinate.latitude * oneDegree * 0.5);
   ra = (re * sf) / Math.pow(ra, sn);
-  let theta = coordinate.y * oneDegree - olon;
+  let theta = position.coordinate.longitude * oneDegree - olon;
   if (theta > Math.PI) theta -= 2.0 * Math.PI;
   if (theta < -Math.PI) theta += 2.0 * Math.PI;
   theta *= sn;
 
-  gridCoordinate.x = Math.floor(ra * Math.sin(theta) + originLatitudeToGrid + 0.5);
-  gridCoordinate.y = Math.floor(ro - ra * Math.cos(theta) + originLongitudeToGrid + 0.5);
+  position.gridCoordinate.x = Math.floor(ra * Math.sin(theta) + originLatitudeToGrid + 0.5);
+  position.gridCoordinate.y = Math.floor(ro - ra * Math.cos(theta) + originLongitudeToGrid + 0.5);
 }

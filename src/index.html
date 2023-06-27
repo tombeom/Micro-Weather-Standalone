@@ -8,13 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet" />
     <link href="/dist/output.css" rel="stylesheet" />
   </head>
-  <body class="w-[500px] h-[400px] font-['IBM_Plex_Sans_KR'] text-white bg-[#5490e5] dark:bg-[#1f242e]">
+  <body class="w-[800px] h-[400px] font-['IBM_Plex_Sans_KR'] text-white bg-[#5490e5] dark:bg-[#1f242e]">
     <h1 class="sr-only">Micro-Weather</h1>
     <main>
       <section>
         <h2 class="sr-only">현재 온도</h2>
         <article class="flex justify-center items-center mb-5 gap-4">
-          <img class="w-24" src="images/loading.png" alt="loading" id="ncstImg" />
+          <img class="w-24" src="images/loading.png" alt="불러오는 중" id="ncstImg" />
           <h3 class="text-7xl font-bold" id="ncstTemp">-°</h3>
         </article>
       </section>
@@ -24,11 +24,11 @@
           <h3 class="text-xl font-bold" id="location">-</h3>
           <div class="text-lg ml-4">
             <div class="flex mb-3">
-              <img class="w-7 mr-2" src="images/umbrella.png" alt="precipitation" />
+              <img class="w-7 mr-2" src="images/loading.png" alt="불러오는 중" id="ncstPrecipitationImg"/>
               <h3 id="ncstPrecipitation">강수량 - mm</h3>
             </div>
             <div class="flex">
-              <img class="w-7 mr-2" src="images/humidity.png" alt="humidity" />
+              <img class="w-7 mr-2" src="images/humidity.png" alt="습도" />
               <h3 id="ncstHumidity">습도 -%</h3>
             </div>
           </div>
@@ -37,15 +37,16 @@
       <section>
         <h2 class="sr-only">현재 미세먼지 정보</h2>
         <article class="flex justify-center items-center mt-5">
-          <h2 class="p-2 mr-2 border-2 rounded-full font-bold">-</h2>
+          <h3 class="pr-6 text-lg" id="station">-</h3>
+          <h2 class="p-2 mr-2 border-2 rounded-full font-bold" id="pm25">-</h2>
           <div>
             <h3>초미세먼지</h3>
-            <h3 class="font-bold">-</h3>
+            <h3 class="font-bold" id="pm25Grade">-</h3>
           </div>
-          <h2 class="p-2 ml-10 mr-2 border-2 rounded-full font-bold">-</h2>
+          <h2 class="p-2 ml-10 mr-2 border-2 rounded-full font-bold" id="pm10">-</h2>
           <div>
             <h3>미세먼지</h3>
-            <h3 class="font-bold">-</h3>
+            <h3 class="font-bold" id="pm10Grade">-</h3>
           </div>
         </article>
       </section>
@@ -57,10 +58,11 @@
     </section>
     <!-- Load JS Files -->
     <script src="scripts/class.js"></script>
+    <script src="scripts/draw.js"></script>
     <script src="scripts/location.js"></script>
     <script src="scripts/weather.js"></script>
+    <script src="scripts/particulateMatter.js"></script>
     <script src="scripts/init.js"></script>
-    <script src="scripts/draw.js"></script>
     <!-- // Load JS Files -->
   </body>
 </html>

@@ -53,44 +53,32 @@ const imgData = [
     alt: "뇌우",
     id: "thunderStorm",
   },
+  {
+    idx: "9",
+    src: "images/rainUmbrella.png",
+    alt: "비 오는 우산",
+    id: "rainUmbrella",
+  },
+  {
+    idx: "10",
+    src: "images/foldedUmbrella.png",
+    alt: "접힌 우산",
+    id: "foldedUmbrella",
+  },
 ];
 
-class NowcastWeather {
-  constructor(obj) {
-    this.category = obj.category;
-    this.obsrValue = obj.obsrValue;
-  }
-}
-
-class ForecastWeather {
-  constructor(obj) {
-    this.fcstTime = obj.fcstTime;
-    this.category = obj.category;
-    this.fcstValue = obj.fcstValue;
-  }
-}
-
-class ParticulateMatter {
-  constructor() {}
-}
-
-const coordinate = {
-  x: "",
-  y: "",
-};
-
-const gridCoordinate = {
-  x: "",
-  y: "",
-};
-
-const address = {
-  country: "",
-  province: "",
-  city: "",
-  quarter: "",
-  road: "",
-  building: "",
+const position = {
+  coordinate: {latitude: "", longitude: ""},
+  gridCoordinate: {x: "", y: ""},
+  tmCoordinate: {x: "", y: ""},
+  address: {
+    country: "",
+    province: "",
+    city: "",
+    quarter: "",
+    road: "",
+    building: "",
+  },
 };
 
 const nowcastData = {
@@ -107,6 +95,35 @@ const forecastData = {
   rn1: [],
   sky: [],
   t1h: [],
-}
+};
 
-const particulateMatterData = [];
+const particulateMatterData = {
+  0: {
+    stationName: "",
+    pm10: "",
+    pm10Flag: "",
+    pm10Grade: "",
+    pm25: "",
+    pm25Flag: "",
+    pm25Grade: "",
+  },
+  1: {
+    stationName: "",
+    pm10: "",
+    pm10Flag: "",
+    pm10Grade: "",
+    pm25: "",
+    pm25Flag: "",
+    pm25Grade: "",
+  },
+  2: {
+    stationName: "",
+    pm10: "",
+    pm10Flag: "",
+    pm10Grade: "",
+    pm25: "",
+    pm25Flag: "",
+    pm25Grade: "",
+  },
+  nearestStation: [],
+};

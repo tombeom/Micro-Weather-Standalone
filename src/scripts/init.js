@@ -1,13 +1,12 @@
 function init(position) {
   setCoordinate(position);
   setAddress();
-  setGeoCoordToGridCoord();
+  convertCoordToGridCoord();
+  convertCoordToTMCoord();
   getNowcast();
-  getForecast();
-  setTimeout(function () {
-    drawNcst();
-    drawFcst();
-  }, 700);
+  setTimeout(() => {
+    drawPM();
+  }, '1500');
 }
 
 navigator.geolocation.getCurrentPosition(
