@@ -146,11 +146,11 @@ function checkPMGrade(type, pmGradeData) {
     // PM 10 미세먼지 값이 들어왔을 때 기준
     if (pmGradeData > 0 && pmGradeData <= 30) {
       return "좋음";
-    } else if (pmGradeData > 31 && pmGradeData <= 80) {
+    } else if (pmGradeData >= 31 && pmGradeData <= 80) {
       return "보통";
-    } else if (pmGradeData > 81 && pmGradeData <= 150) {
+    } else if (pmGradeData >= 81 && pmGradeData <= 150) {
       return "나쁨";
-    } else if (pmGradeData > 151) {
+    } else if (pmGradeData >= 151) {
       return "매우 나쁨";
     } else {
       return "데이터 없음";
@@ -159,11 +159,11 @@ function checkPMGrade(type, pmGradeData) {
     // PM 2.5 미세먼지 값이 들어왔을 때 기준
     if (pmGradeData > 0 && pmGradeData <= 15) {
       return "좋음";
-    } else if (pmGradeData > 16 && pmGradeData <= 35) {
+    } else if (pmGradeData >= 16 && pmGradeData <= 35) {
       return "보통";
-    } else if (pmGradeData > 36 && pmGradeData <= 75) {
+    } else if (pmGradeData >= 36 && pmGradeData <= 75) {
       return "나쁨";
-    } else if (pmGradeData > 76) {
+    } else if (pmGradeData >= 76) {
       return "매우 나쁨";
     } else {
       return "데이터 없음";
