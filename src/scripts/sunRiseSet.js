@@ -1,3 +1,8 @@
+// index.html 로드 시 일출, 일몰 데이터를 받아오는 javascript
+
+/**
+ * 위경도 데이터를 바탕으로 현재 위치의 일출, 일몰 데이터를 저장하는 함수 - sunRiseSet.js
+ */
 async function getSunRiseSetData() {
     const url = "http://apis.data.go.kr/B090041/openapi/service/RiseSetInfoService/getLCRiseSetInfo";
     const params = {
@@ -15,20 +20,24 @@ async function getSunRiseSetData() {
         const data = domParser.parseFromString(res, "text/xml");
         sunRiseSetData.sunrise = data.getElementsByTagName("sunrise")[0].textContent.trim();
         sunRiseSetData.sunset = data.getElementsByTagName("sunset")[0].textContent.trim();
-        setBG();
+        setBG(); // setBG() - sunRiseSet.js 실행
       })
       .catch((e) => {
         console.log(`Couldn't Get Sun Rise Set Data\nAPI Call Failed`);
-        console.log(e)
       });
   }
 
+/**
+ * 일출, 일몰 데이터를 바탕으로 body Backgroud Color를 설정하는 함수 - sunRiseSet.js
+ */
 function setBG() {
   const nowTime = new Date().getHours().toString() + new Date().getMinutes().toString();
 
   if (parseInt(nowTime) < parseInt(sunRiseSetData.sunrise) || parseInt(nowTime) > parseInt(sunRiseSetData.sunset)) {
+    // 일몰 시간 이후, 일출 시간 전에는 어두운 배경색 설정
     document.querySelector("#popup").style.backgroundColor = "#1f242e";
   } else {
+    // 이외에는 밝은 배경색 설정 (일출 시간 이후, 일몰 시간 전)
     document.querySelector("#popup").style.backgroundColor = "#5490e5";
   }
 }
