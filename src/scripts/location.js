@@ -3,6 +3,7 @@
 /**
  * Nominatim API를 사용해 위경도 데이터를 역지오코딩 하여 OpenStreetMap의 주소로 변환하는 함수 - location.js
  */
+// https://nominatim.org/release-docs/latest/api/Reverse/ (Nominatim 4.2.3)
 async function setAddress() {
   const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coordinate.latitude}&lon=${position.coordinate.longitude}&zoom=18`;
   const c = await fetch(url)
@@ -36,10 +37,11 @@ function setCoordinate(coordinate) {
 
 /**
  * 사용자의 위치(위경도 데이터)를 불러오면서 에러가 발생했을 때 실행되는 함수 - location.js
- * @param {unsigned short} e 
+ * @param {Object} e 
  */
+// https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError
 function getPositionError(e) {
-  // https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError
+  console.log(typeof(e))
   switch (e.code) {
     case 1:
       alert("위치 권한이 거부되었습니다."); // PERMISSION_DENIED

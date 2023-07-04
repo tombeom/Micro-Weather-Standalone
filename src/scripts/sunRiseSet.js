@@ -1,8 +1,9 @@
 // index.html 로드 시 일출, 일몰 데이터를 받아오는 javascript
 
 /**
- * 위경도 데이터를 바탕으로 현재 위치의 일출, 일몰 데이터를 저장하는 함수 - sunRiseSet.js
+ * 한국천문연구원 OPEN API를 사용해 위경도 데이터를 바탕으로 현재 위치의 일출, 일몰 데이터를 조회, 저장하는 함수 - sunRiseSet.js
  */
+// https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15012688
 async function getSunRiseSetData() {
     const url = "http://apis.data.go.kr/B090041/openapi/service/RiseSetInfoService/getLCRiseSetInfo";
     const params = {

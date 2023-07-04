@@ -117,7 +117,7 @@ function checkPM(pmData) {
   // 미세먼지 측정소 저장
   returnData.station = pmData.stationName;
 
-  // 미세먼지 값이 있다면 checkPMGrade() - draw.js 실행해서 미세먼지 등급 저장. 그렇지 않다면 "데이터 없음"을 반환
+  // 미세먼지 값이 있다면 checkPMGrade() - draw.js 실행해서 미세먼지 등급 저장. 그렇지 않다면 "데이터 없음"을 return
   if (pmData.pm10 != "-") {
     returnData.pm10 = pmData.pm10;
     returnData.pm10Grade = checkPMGrade("pm10", pmData.pm10);
@@ -247,8 +247,8 @@ function getWeatherImage(lightning, precipitationType, sky, rn1) {
  */
 function getUmbrellaImg(rn1) {
   if (rn1 != "강수없음" && rn1 != "0") {
-    return imgData[9];
+    return imgData[9]; // 비 오는 우산 - images/rainUmbrella.png
   } else {
-    return imgData[10];
+    return imgData[10]; // 접힌 우산 - images/foldedUmbrella.png
   }
 }

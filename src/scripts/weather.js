@@ -1,3 +1,8 @@
+// index.html 로드 시 날씨 데이터를 받아오는 javascript
+
+/**
+ * 현재 날짜를 API 호출 시 사용되는 포맷에 맞게 return 해주는 함수 - weather.js
+ */
 function getDate() {
   const todayDate = new Date();
   const year = todayDate.getFullYear().toString();
@@ -15,6 +20,10 @@ function getDate() {
   return dateFormat;
 }
 
+/**
+ * 현재 시각을 API 호출 시 사용되는 포맷에 맞게 return 해주는 함수 - weather.js
+ * @param {String} type 
+ */
 function getTime(type) {
   const todayTime = new Date();
 
@@ -113,6 +122,11 @@ function getTime(type) {
   }
 }
 
+/**
+ * 날씨 데이터를 저장하는 함수 - weather.js
+ * @param {String} type
+ * @param {Object} data
+ */
 function setWeatherData(type, data) {
   if (type === "ncst") {
     if (data.category === "PTY") {
@@ -144,6 +158,10 @@ function setWeatherData(type, data) {
   }
 }
 
+/**
+ * 기상청 OPEN API를 사용해 초단기실황 데이터를 조회하는 함수 - weather.js
+ */
+// https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15084084
 async function getNowcast() {
   const url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst";
   const params = {
@@ -157,14 +175,15 @@ async function getNowcast() {
     ny: position.gridCoordinate.y,
   };
   const requestUrl = `${url}?${new URLSearchParams(params).toString()}`;
+  console.log(requestUrl)
   const c = await fetch(requestUrl)
     .then((res) => res.json())
     .then((res) => {
       if (res.response.header.resultCode === "00") {
         for (const i of res.response.body.items.item) {
-          setWeatherData("ncst", i)
+          setWeatherData("ncst", i) // setWeatherData() - weather.js 실행
         }
-        getForecast()
+        getForecast() // getForecast() - weather.js 실행
       } else {
         console.log(`Couldn't Get Nowcast Data\nError Code : ${res.response.header.resultCode}`);
       }
@@ -174,6 +193,10 @@ async function getNowcast() {
     });
 }
 
+/**
+ * 기상청 OPEN API를 사용해 초단기예보 데이터를 조회하는 함수 - weather.js
+ */
+// https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15084084
 async function getForecast() {
   const url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
   const params = {
@@ -192,10 +215,10 @@ async function getForecast() {
     .then((res) => {
       if (res.response.header.resultCode === "00") {
         for (const i of res.response.body.items.item) {
-          setWeatherData("fcst", i)
+          setWeatherData("fcst", i) // setWeatherData() - weather.js 실행
         }
-        drawNcst();
-        drawFcst();
+        drawNcst(); // drawNcst() - draw.js 실행
+        drawFcst(); // drawFcst() - draw.js 실행
       } else {
         console.log(`Couldn't Get Forecast Data\nError Code : ${res.response.header.resultCode}`);
       }
@@ -204,27 +227,3 @@ async function getForecast() {
       console.log(`Couldn't Get Forecast Data\nAPI Call Failed`);
     });
 }
-
-/*
-[0]PTY : 강수형태 (없음(0), 비(1), 비/눈(2), 눈(3), 빗방울(5), 빗방울눈날림(6), 눈날림(7))
-[1]REH : 습도 (%)
-[2]RN1 : 1시간 강수량 (mm)
-[3]T1H : 기온 (℃)
-[4]UUU : 동서바람성분 (m/s)
-[5]VEC : 풍향 (deg)
-[6]VVV : 남북바람성분 (m/s)
-[7]WSD : 풍속 (m/s)
-*/
-
-/*
-[0]LGT : 낙뢰 (kA)
-[1]PTY : 강수형태 (없음(0), 비(1), 비/눈(2), 눈(3), 빗방울(5), 빗방울눈날림(6), 눈날림(7))
-[2]RN1 : 1시간 강수량 (mm)
-[3]SKY : 하늘상태 (맑음(1), 구름많음(3), 흐림(4))
-[4]T1H : 기온 (℃)
-[5]REH : 습도 (%)
-[6]UUU : 동서바람성분 (m/s)
-[7]VVV : 남북바람성분 (m/s)
-[8]VEC : 풍향 (deg)
-[9]WSD : 풍속 (m/s)
-*/
