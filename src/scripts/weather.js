@@ -30,91 +30,93 @@ function getTime(type) {
   let hourFormat = "";
 
   if (type === "ncst") {
-    // ncst 요청 시 API 제공 시간 40분 이후
+    // ncst 요청 시 API 제공 시간 30분 이후이지만 안정성을 위해 40분 이후로 설정하는 것을 추천
+    ncstServeMinute = 30
     if (todayTime.getHours() === 0) {
       // 00시 getHour() 호출 시 0 출력
-      if (todayTime.getMinutes() < 30) {
-        // 40분 이전 시 "2300" 리턴
+      if (todayTime.getMinutes() < ncstServeMinute) {
+        // ncstServeTime 이전 "2300" 리턴
         hourFormat = `2300`
         return hourFormat
       } else {
-        // 40분 이후 시 "0000" 리턴
+        // ncstServeMinute 이후 "0000" 리턴
         hourFormat = `0000`
         return hourFormat
       }
     } else if (todayTime.getHours() > 0 && todayTime.getHours() < 10) {
       // 01시 ~ 10시까지 getHour() 호출 시 한 자리 수 출력
-      if (todayTime.getMinutes() < 40) {
-        // 40분 이전 시 "0 + (현재 시각 - 1) + 00" 값 리턴
+      if (todayTime.getMinutes() < ncstServeMinute) {
+        // ncstServeMinute 이전 "0 + (현재 시각 - 1) + 00" 값 리턴
         hourFormat = `0${(todayTime.getHours()-1)}00`
         return hourFormat
       } else {
-        // 40분 이후 시 "0 + 현재 시각 + 00" 값 리턴
+        // ncstServeMinute 이후 "0 + 현재 시각 + 00" 값 리턴
         hourFormat = `0${todayTime.getHours()}00`
         return hourFormat
       }
     } else if (todayTime.getHours() === 10){
-      if (todayTime.getMinutes() < 40) {
-        // 40분 이전 시 "현재 시각 + 00" 값 리턴
+      if (todayTime.getMinutes() < ncstServeMinute) {
+        // ncstServeMinute 이전 "현재 시각 + 00" 값 리턴
         hourFormat = `0${(todayTime.getHours()-1)}00`
         return hourFormat
       } else {
-        // 40분 이후 시 "현재 시각 + 00" 값 리턴
+        // ncstServeMinute 이후 "현재 시각 + 00" 값 리턴
         hourFormat = `${todayTime.getHours()}00`
         return hourFormat
       }
     } else {
-      if (todayTime.getMinutes() < 40) {
-        // 40분 이전 시 "현재 시각 + 00" 값 리턴
+      if (todayTime.getMinutes() < ncstServeMinute) {
+        // ncstServeMinute 이전 "현재 시각 + 00" 값 리턴
         hourFormat = `${(todayTime.getHours()-1)}00`
         return hourFormat
       } else {
-        // 40분 이후 시 "현재 시각 + 00" 값 리턴
+        // ncstServeMinute 이후 "현재 시각 + 00" 값 리턴
         hourFormat = `${todayTime.getHours()}00`
         return hourFormat
       }
     }
   } else if (type === "fcst") {
     // fcst 요청 시 30분 단위 호출 및 API 제공 시간 45분 이후
+    fcstServeMinute = 45
     if (todayTime.getHours() === 0) {
       // 00시 getHour() 호출 시 0 출력
-      if (todayTime.getMinutes() < 30) {
-        // 40분 이전 시 "2330" 리턴
+      if (todayTime.getMinutes() < fcstServeMinute) {
+        // fcstServeMinute 이전 "2330" 리턴
         hourFormat = `0030`
         return hourFormat
       } else {
-        // 40분 이후 시 "0030" 리턴
+        // fcstServeMinute 이후 "0030" 리턴
         hourFormat = `0030`
         return hourFormat
       }
     } else if (todayTime.getHours() > 0 && todayTime.getHours() < 10) {
       // 01시 ~ 10시까지 getHour() 호출 시 한 자리 수 출력
-      if (todayTime.getMinutes() < 45) {
-        // 40분 이전 시 "0 + (현재 시각 - 1) + 30" 값 리턴
+      if (todayTime.getMinutes() < fcstServeMinute) {
+        // fcstServeMinute 이전 "0 + (현재 시각 - 1) + 30" 값 리턴
         hourFormat = `0${(todayTime.getHours()-1)}30`
         return hourFormat
       } else {
-        // 40분 이후 시 "0 + 현재 시각 + 30" 값 리턴
+        // fcstServeMinute 이후 "0 + 현재 시각 + 30" 값 리턴
         hourFormat = `0${todayTime.getHours()}30`
         return hourFormat
       }
     } else if (todayTime.getHours() === 10){
-      if (todayTime.getMinutes() < 45) {
-        // 40분 이전 시 "현재 시각 + 00" 값 리턴
+      if (todayTime.getMinutes() < fcstServeMinute) {
+        // fcstServeMinute 이전 "현재 시각 + 30" 값 리턴
         hourFormat = `0${(todayTime.getHours()-1)}30`
         return hourFormat
       } else {
-        // 40분 이후 시 "현재 시각 + 00" 값 리턴
+        // fcstServeMinute 이후 "현재 시각 + 30" 값 리턴
         hourFormat = `${todayTime.getHours()}30`
         return hourFormat
       }
     } else {
-      if (todayTime.getMinutes() < 45) {
-        // 40분 이전 시 "현재 시각 + 00" 값 리턴
+      if (todayTime.getMinutes() < fcstServeMinute) {
+        // fcstServeMinute 이전 "현재 시각 + 30" 값 리턴
         hourFormat = `${(todayTime.getHours()-1)}30`
         return hourFormat
       } else {
-        // 40분 이후 시 "현재 시각 + 00" 값 리턴
+        // fcstServeMinute 이후 "현재 시각 + 30" 값 리턴
         hourFormat = `${todayTime.getHours()}30`
         return hourFormat
       }
