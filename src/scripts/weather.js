@@ -177,7 +177,6 @@ async function getNowcast() {
     ny: position.gridCoordinate.y,
   };
   const requestUrl = `${url}?${new URLSearchParams(params).toString()}`;
-  console.log(requestUrl)
   const c = await fetch(requestUrl)
     .then((res) => res.json())
     .then((res) => {
