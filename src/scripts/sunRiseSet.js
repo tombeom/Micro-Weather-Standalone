@@ -34,11 +34,11 @@ async function getSunRiseSetData() {
 function setBG() {
   const nowTime = new Date().getHours().toString() + new Date().getMinutes().toString();
 
-  if (parseInt(nowTime) < parseInt(sunRiseSetData.sunrise) || parseInt(nowTime) > parseInt(sunRiseSetData.sunset)) {
-    // 일몰 시간 이후, 일출 시간 전에는 어두운 배경색 설정
-    document.querySelector("#popup").style.backgroundColor = "#1f242e";
-  } else {
+  if (parseInt(nowTime) > parseInt(sunRiseSetData.sunrise) && parseInt(nowTime) < parseInt(sunRiseSetData.sunset)) {
     // 이외에는 밝은 배경색 설정 (일출 시간 이후, 일몰 시간 전)
     document.querySelector("#popup").style.backgroundColor = "#5490e5";
+  } else {
+    // 일몰 시간 이후, 일출 시간 전에는 어두운 배경색 설정
+    document.querySelector("#popup").style.backgroundColor = "#1f242e";
   }
 }
