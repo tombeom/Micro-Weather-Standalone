@@ -44,6 +44,26 @@ Micro-Weather-Standalone은 Micro-Weather (https://github.com/tombeom/Micro-Weat
   <img src="https://lh3.googleusercontent.com/IWepTl9O8oKw36G3gpTtrcxzrbzYnI4IHYMCeNrbiUo10BQmWzaT4DCx8FI4NrS8obETGa_Od6RiHOavH0H1KPDC"/>
   <img src="https://lh3.googleusercontent.com/GKrJOSxTnwkPjRwMk8fQ4rJn39oC8RsF4K96CRuIkVRI16Dno5RyjYa58vKZ7MAN3t2jRURJlcepOYdrbARwJ3kDhLE"/>
 <div>
+
+### 함수 실행 순서
+```
+init()
+  -setCoordinate() - location.js
+    setAddress() - location.js
+	    drawPosition() - draw.js
+      getSunRiseSetData - sunRiseSet.js
+        setBG() - sunRiseSet.js
+  -convertCoordToGridCoord() - location.js
+  -convertCoordToTMCoord() - particulateMatter.js
+    getStaionInfo() - particulateMatter.js
+      getPM() - particulateMatter.js
+        setPM() - particulateMatter.js
+        drawPM() - draw.js
+  -getNowcast() - weather.js
+    getForecast() - weather.js
+      drawNcst() - draw.js
+      drawFcst() - draw.js
+```
   
 ### 알려진 문제점
 ```
